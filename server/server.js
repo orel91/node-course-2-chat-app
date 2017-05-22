@@ -14,14 +14,21 @@ app.use(express.static(publicPath));
 io.on("connection", (socket) => {
     console.log("New user connected");
 
-    socket.emit("newMessage", {
-        from: "Mich Mich",
-        text: "Coucou bb",
-        createdAt: 4567
-    });
+    //socket.emit is to send a message to the socket only
+    // socket.emit("newMessage", {
+    //     from: "Mich Mich",
+    //     text: "Coucou bb",
+    //     createdAt: 4567
+    // });
 
     socket.on("createMessage", (newMessage) => {
         console.log("createMessage", newMessage);
+        //io.emit is to send a message to everybody
+        io.emit("newMessage", {
+            from: newMessage.from,
+            text: newMessage.text,
+            createdAt: new Date().getTime()
+        });
     });
 
     socket.on("disconnect", () => {
