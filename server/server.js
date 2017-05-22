@@ -21,6 +21,18 @@ io.on("connection", (socket) => {
     //     createdAt: 4567
     // });
 
+    socket.emit("newMessage", {
+        from: "Admin",
+        text: "Welcome to the chat app",
+        createdAt: new Date().getTime()
+    });
+
+    socket.broadcast.emit("newMessage", {
+        from: "Admin",
+        text: "New user joined",
+        createdAt: new Date().getTime()
+    });
+
     socket.on("createMessage", (newMessage) => {
         console.log("createMessage", newMessage);
         //io.emit is to send a message to everybody
@@ -29,6 +41,11 @@ io.on("connection", (socket) => {
             text: newMessage.text,
             createdAt: new Date().getTime()
         });
+        // socket.broadcast.emit("newMessage", {
+        //     from: newMessage.from,
+        //     text: newMessage.text,
+        //     createdAt: new Date().getTime()
+        // });
     });
 
     socket.on("disconnect", () => {
